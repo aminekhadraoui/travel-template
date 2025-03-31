@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Adventures</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2A9D8F;
+            --secondary: #E76F51;
+            --accent: #264653;
+            --text: #2B2D42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('https://source.unsplash.com/random/1920x1080/?mountain') center/cover fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        nav {
+            position: fixed;
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .section {
+            padding: 5rem 2rem;
+        }
+
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .destination-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .itinerary-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            background: #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .itinerary-content {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .itinerary-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .contact-section {
+            background: var(--accent);
+            color: white;
+            text-align: center;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Wanderlust</div>
+        <div class="nav-links">
+            <a href="#destinations">Destinations</a>
+            <a href="#itineraries">Itineraries</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Next Adventure</h1>
+            <p>Explore the world's most breathtaking destinations</p>
+        </div>
+    </section>
+
+    <section id="destinations" class="section">
+        <h2>Popular Destinations</h2>
+        <div class="destinations-grid" id="destinationsGrid"></div>
+    </section>
+
+    <section id="itineraries" class="section">
+        <h2>Sample Itineraries</h2>
+        <div class="itinerary-tabs" id="itineraryTabs"></div>
+        <div class="itinerary-content" id="itineraryContent"></div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <h2>Start Your Journey</h2>
+        <form class="contact-form">
+            <div class="form-group">
+                <input type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="tab active">Send Message</button>
+        </form>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </section>
+
+    <script>
+        // Destinations Data
+        const destinations = [
+            { 
+                image: 'https://source.unsplash.com/random/800x600/?bali',
+                title: 'Bali Paradise',
+                price: '$1599',
+                description: 'Explore tropical beaches and ancient temples'
+            },
+            {
+                image: 'https://source.unsplash.com/random/800x600/?switzerland',
+                title: 'Swiss Alps',
+                price: '$2999',
+                description: 'Majestic mountain adventures'
+            },
+            {
+                image: 'https://source.unsplash.com/random/800x600/?japan',
+                title: 'Japanese Culture',
+                price: '$2299',
+                description: 'Discover traditional and modern Japan'
+            }
+        ];
+
+        // Itineraries Data
+        const itineraries = [
+            {
+                day: 1,
+                title: "Arrival & Orientation",
+                content: "Arrive at destination, hotel check-in, welcome dinner"
+            },
+            {
+                day: 2,
+                title: "City Exploration",
+                content: "Guided city tour, visit historical landmarks"
+            },
+            {
+                day: 3,
+                title: "Adventure Day",
+                content: "Hiking, water sports, or cultural workshops"
+            }
+        ];
+
+        // Initialize Destinations
+        function initDestinations() {
+            const grid = document.getElementById('destinationsGrid');
+            destinations.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'destination-card';
+                card.innerHTML = `
+                    <div class="price-tag">${dest.price}</div>
+                    <img src="${dest.image}" alt="${dest.title}">
+                    <div class="card-content">
+                        <h3>${dest.title}</h3>
+                        <p>${dest.description}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize Itineraries
+        function initItineraries() {
+            const tabsContainer = document.getElementById('itineraryTabs');
+            const contentContainer = document.getElementById('itineraryContent');
+
+            itineraries.forEach((itinerary, index) => {
+                const tab = document.createElement('button');
+                tab.className = `tab ${index === 0 ? 'active' : ''}`;
+                tab.textContent = `Day ${itinerary.day}`;
+                tab.addEventListener('click', () => showItinerary(itinerary, index));
+                tabsContainer.appendChild(tab);
+            });
+
+            showItinerary(itineraries[0], 0);
+        }
+
+        function showItinerary(itinerary, index) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab')[index].classList.add('active');
+            
+            const content = document.getElementById('itineraryContent');
+            content.innerHTML = `
+                <h3>${itinerary.title}</h3>
+                <p>${itinerary.content}</p>
+            `;
+            content.classList.add('active');
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initDestinations();
+            initItineraries();
+            
+            // Parallax Effect
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                document.querySelector('.hero').style.backgroundPositionY = `${scrolled * 0.5}px`;
+            });
+        });
+    </script>
+</body>
+</html>
